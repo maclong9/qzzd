@@ -29,9 +29,31 @@
 		FAB26FE92CAAE8AC00B628DB /* QzzDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QzzDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FAB2703B2CAB005E00B628DB /* Exceptions for "QzzD" folder in "QzzDUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/Components/CButton.swift,
+				Views/Components/Layout.swift,
+				Views/Game/NextRound.swift,
+				Views/Game/QuestionView.swift,
+				Views/Menu/GameFinder.swift,
+				Views/Menu/InGameMenu.swift,
+				Views/Menu/Lobby.swift,
+				Views/Menu/MainMenu.swift,
+				Views/Player/CreatePlayer.swift,
+				Views/Player/PlayerCard.swift,
+			);
+			target = FAB26FE82CAAE8AC00B628DB /* QzzDUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FAB26FD12CAAE8AA00B628DB /* QzzD */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FAB2703B2CAB005E00B628DB /* Exceptions for "QzzD" folder in "QzzDUITests" target */,
+			);
 			path = QzzD;
 			sourceTree = "<group>";
 		};
