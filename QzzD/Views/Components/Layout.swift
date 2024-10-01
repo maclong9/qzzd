@@ -7,12 +7,29 @@
 
 import SwiftUI
 
-struct Layout: View {
+struct Layout<Content: ViewContent>: View {
+    let content: () -> Content
+    
+    init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("QzzD!")
+                .font(.largeTitle)
+                .fontWeight(.black)
+                .padding(.top, 10)
+            Spacer().frame(height: 50)
+            content()
+            Spacer()
+        }
+        .padding()
     }
 }
 
 #Preview {
-    Layout()
+    Layout {
+        Text("Hello, Layout!")
+    }
 }
