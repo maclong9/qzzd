@@ -10,6 +10,7 @@ import SwiftUI
 struct NextRoundView: View {
     var isReader: Bool = false
     @State var round: Int
+    @State var questionRead: Bool = false
     @State private var rotationAngle: Double = 0
     
     
@@ -18,16 +19,19 @@ struct NextRoundView: View {
             Spacer().frame(height: 125)
             RollingText(round: $round)
             Spacer()
+            
             if isReader {
                 CButton(action: { print("Reading Question") }, fullWidth: true) {
                     Text("See Question")
                     Image(systemName: "arrowshape.turn.up.forward.fill")
                 }
             } else {
-                CButton(action: { print("Waiting...") }, fullWidth: true, disabled: true) {
-                    Text("Waiting")
-                    Image(systemName: "rays")
-                }.disabled(true).opacity(0.8)
+                CButton(action: { print("Viewing Question") }, fullWidth: true, disabled: true) {
+                    Text(!questionRead ? "Waiting" : "Answer Question")
+                    if !questionRead { Image(systemName: "rays") }
+                }
+                .disabled(!questionRead)
+                .opacity(!questionRead ? 0.8 : 1)
             }
         }
     }
