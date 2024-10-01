@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CButton<Content: View>: View {
+struct CButton<Content: ViewContent>: View {
     let action: () -> Void
     let color: Color
     let fullWidth: Bool
