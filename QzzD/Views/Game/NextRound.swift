@@ -9,15 +9,13 @@ import SwiftUI
 
 struct NextRoundView: View {
     var isReader: Bool = false
-    @State var round: Int
+    var round: Int
     @State var questionRead: Bool = false
-    @State private var rotationAngle: Double = 0
-    
     
     var body: some View {
         Layout(title: "Get Ready") {
             Spacer().frame(height: 125)
-            RollingText(round: $round)
+            RollingText(round: round)
             Spacer()
             
             if isReader {
@@ -28,7 +26,10 @@ struct NextRoundView: View {
             } else {
                 CButton(action: { print("Viewing Question") }, fullWidth: true, disabled: true) {
                     Text(!questionRead ? "Waiting" : "Answer Question")
-                    if !questionRead { Image(systemName: "rays") }
+                    if !questionRead {
+                        // TODO: Add animation to loading spinner
+                        Image(systemName: "rays")
+                    }
                 }
                 .disabled(!questionRead)
                 .opacity(!questionRead ? 0.8 : 1)

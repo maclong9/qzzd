@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RollingText: View {
-    @Binding var round: Int
+    var round: Int
     @State private var animationRange: [Int] = []
     
     var body: some View {
