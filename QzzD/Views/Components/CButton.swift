@@ -13,11 +13,11 @@ struct CButton<Content: ViewContent>: View {
     let fullWidth: Bool
     let content: () -> Content
     
-    init(action: @escaping () -> Void, color: Color = .blue, fullWidth: Bool = false, @ViewBuilder content: @escaping () -> Content) {
-        self.content = content
+    init(action: @escaping () -> Void, color: Color = .blue, fullWidth: Bool = false, disabled: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.action = action
         self.color = color
         self.fullWidth = fullWidth
+        self.content = content
     }
     
     var body: some View {
@@ -25,8 +25,7 @@ struct CButton<Content: ViewContent>: View {
             action()
         } label: {
             content()
-                .frame(maxWidth: fullWidth ? .infinity : nil)
-        }
+        }.frame(maxWidth: fullWidth ? .infinity : nil)
         .padding()
         .background(color)
         .foregroundColor(.white)
