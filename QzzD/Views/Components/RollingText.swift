@@ -19,16 +19,14 @@ struct RollingText: View {
                     .opacity(0)
                     .overlay {
                         GeometryReader { proxy in
-                            let size = proxy.size
-                            
                             VStack(spacing: 0) {
                                 ForEach(0...9, id: \.self) { number in
                                     Text("\(number)")
                                         .font(.system(size: 150, weight: .black))
-                                        .frame(width: size.width, height: size.height, alignment: .center)
+                                        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
                                 }
                             }
-                            .offset(y: -CGFloat(animationRange[index]) * size.height)
+                            .offset(y: -CGFloat(animationRange[index]) * proxy.size.height)
                         }
                         .clipped()
                     }
