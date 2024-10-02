@@ -35,22 +35,14 @@ struct RollingText: View {
             }
         }
         .onAppear {
-            initializeAnimationRange()
+            animationRange = Array(repeating: 0, count: "\(round)".count)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                updateText()
-            }
-        }
-    }
-    
-    private func initializeAnimationRange() {
-        animationRange = Array(repeating: 0, count: "\(round)".count)
-    }
-    
-    private func updateText() {
-        let stringValue = "\(round)"
-        for (index, value) in zip(0..<stringValue.count, stringValue) {
-            withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1, blendDuration: 1)) {
-                animationRange[index] = Int(String(value)) ?? 0
+                let stringValue = "\(round)"
+                for (index, value) in zip(0..<stringValue.count, stringValue) {
+                    withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1, blendDuration: 1)) {
+                        animationRange[index] = Int(String(value)) ?? 0
+                    }
+                }
             }
         }
     }

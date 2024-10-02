@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct NextRoundView: View {
-    var isReader: Bool = false
     var round: Int
+    var isReader: Bool = false
     @State var questionRead: Bool = false
     
     var body: some View {
