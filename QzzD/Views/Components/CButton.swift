@@ -25,12 +25,14 @@ struct CButton<Content: ViewContent>: View {
             action()
         } label: {
             content()
-        }.frame(maxWidth: fullWidth ? .infinity : nil)
-        .padding()
-        .background(color)
-        .foregroundColor(.white)
-        .cornerRadius(10)
-        .fontWeight(.bold)
+                .frame(maxWidth: fullWidth ? .infinity : nil)
+                .padding()
+                .background(color)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .fontWeight(.bold)
+        }.buttonStyle(PlainButtonStyle())
+        
     }
 }
 

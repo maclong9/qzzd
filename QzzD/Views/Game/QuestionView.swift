@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct QuestionView: View {
+    let question: Question
+    let questionNumber: Int
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Layout(title: "Question \(questionNumber)/10") {
+            VStack {
+                Text(question.question)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                HStack {
+                    
+                }
+            }
+        }
     }
 }
 
-#Preview {
-    QuestionView()
+import Foundation
+
+#Preview("Multiple Choice") {
+    QuestionView(question: Question(id: UUID(), type: .multiple, question: "Who designs the MacBook Pro?", difficulty: .easy, category: "Science", correctAnswer: "Apple", incorrectAnswers: ["Microsoft", "Tesla", "McDonalds"]), questionNumber: 1)
 }
