@@ -33,11 +33,15 @@ struct GameCard: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
+                
                 Text(game.title)
                     .font(.headline)
-                Text("\(game.players.count)/8")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                HStack(spacing: 2) {
+                    Image(systemName: "person.2.fill")
+                    Text("\(game.players.count)/8")
+                }
+                .font(.subheadline)
+                .foregroundColor(.secondary)
             }
             
             Spacer()

@@ -14,12 +14,11 @@ struct MainMenu: View {
     var body: some View {
         Layout(showBackButton: false, isMainMenu: true) {
             VStack {
-                NavigationLink(destination: CreatePlayer()) {
-                    CButton(action: { print("Solo Game")}, color: .indigo) {
-                        Text("Solo Game")
-                    }
+                CButton(color: .indigo) {
+                    Text("Solo Game")
                 }
                 .padding()
+                
                 Text("Multiplayer Game")
                     .font(.title)
                     .fontWeight(.black)
@@ -33,13 +32,12 @@ struct MainMenu: View {
                         TextField("Enter your games title", text: $gameName)
                         Text("Let's Go!")
                     }
-                    NavigationLink(destination: GameFinder()) {
-                        CButton(color: .blue) {
-                            HStack {
-                                Text("Join Game")
-                                Image(systemName: "arrowshape.turn.up.right.fill")
-                            }
-                        }
+                    
+                    CButton(color: .blue) {
+                        HStack {
+                            Text("Join Game")
+                            Image(systemName: "arrowshape.turn.up.right.fill")
+                        }   
                     }
                 }
             }.padding(.top, 100)

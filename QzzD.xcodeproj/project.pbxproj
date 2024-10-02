@@ -40,7 +40,6 @@
 				Views/Game/NextRound.swift,
 				Views/Game/QuestionView.swift,
 				Views/Menu/GameFinder.swift,
-				Views/Menu/InGameMenu.swift,
 				Views/Menu/Lobby.swift,
 				Views/Menu/MainMenu.swift,
 				Views/Player/CreatePlayer.swift,
