@@ -11,19 +11,39 @@ struct Game: Identifiable {
     let id = UUID()
     let title: String
     let players: [Player]
-    let answered: [Question]
+    let questions: [Question]
+    let answeredQuestions: [Question]
     let roundCount: Int
     let questionCount: Int
     let currentQuestion: Question?
     let currentReader: Player?
     
-    init(title: String, players: [Player] = [], answered: [Question] = [], roundCount: Int = 0, questionCount: Int = 1, currentQuestion: Question? = nil, currentReader: Player? = nil) {
+    init(title: String, players: [Player] = [], answeredQuestions: [Question] = [], roundCount: Int = 0, questionCount: Int = 1, currentQuestion: Question? = nil, currentReader: Player? = nil) {
         self.title = title
         self.players = players
-        self.answered = answered
+        self.questions = questionsArray
+        self.answeredQuestions = answeredQuestions
         self.roundCount = roundCount
         self.questionCount = questionCount
         self.currentQuestion = currentQuestion
         self.currentReader = currentReader
     }
+    
+    private let questionsArray: [Question] = [
+        Question(
+            style: .boolean,
+            difficulty: .easy,
+            category: .science,
+            question: "Apple designed the MacBook",
+            correctAnswer: .boolean(true)
+        ),
+        Question(
+            style: .normal,
+            difficulty: .easy,
+            category: .science,
+            question: "Who designed the MacBook",
+            correctAnswer: .string("Apple"),
+            incorrectAnswers: ["McDonalds", "Microsoft", "Tesla"]
+        )
+    ]
 }

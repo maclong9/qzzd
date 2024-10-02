@@ -47,5 +47,5 @@ struct RollingText: View {
 }
 
 #Preview {
-    NextRoundView(round: 954)
+    RollingText(round: 954)
 }

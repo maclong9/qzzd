@@ -9,7 +9,6 @@ import SwiftUI
 
 struct NextRoundView: View {
     var round: Int
-    var isReader: Bool = false
     
     var body: some View {
         Layout(title: "Get Ready") {
@@ -17,23 +16,14 @@ struct NextRoundView: View {
             RollingText(round: round)
             Spacer()
             
-            if isReader {
-                CButton(action: { print("Reading Question") }, fullWidth: true) {
-                    HStack {
-                        Text("See Question")
-                        Image(systemName: "arrowshape.turn.up.forward.fill")
-                    }
+            CButton(fullWidth: true) {
+                HStack {
+                    Text("Waiting")
+                    Image(systemName: "rays")
                 }
-            } else {
-                CButton(fullWidth: true) {
-                    HStack {
-                        Text("Waiting")
-                        Image(systemName: "rays")
-                    }
-                }
-                .disabled(true)
-                .opacity(0.8)
             }
+            .disabled(true)
+            .opacity(0.8)
         }
     }
 }

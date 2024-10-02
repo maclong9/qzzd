@@ -64,7 +64,7 @@ struct QuestionView: View {
                 let allAnswers = [answer] + (question.incorrectAnswers ?? [])
                 return question.style == .normal ? allAnswers.shuffled() : ["True", "False"]
             case .boolean(let answer):
-                return [String(answer), String(!answer)]
+                return [String(answer).capitalized, String(!answer).capitalized]
         }
     }
     
@@ -126,9 +126,25 @@ struct InfoIndicator: View {
         currentQuestion: 8,
         question: Question(
             style: .boolean,
-            difficulty: .easy,
-            category: .science,
-            question: "Apple designed the MacBook",
+            difficulty: .medium,
+            category: .entertainment,
+            question: "Oppenheimer was shot for IMAX screens",
             correctAnswer: .boolean(true)
         ))
 }
+
+#Preview("Hard Question") {
+    QuestionView(
+        currentRound: 6,
+        currentQuestion: 8,
+        question: Question(
+            style: .normal,
+            difficulty: .hard,
+            category: .art,
+            question: "What was the name of the asylum Van Gogh admitted himself to",
+            correctAnswer: .string("Saint-Paul"),
+            incorrectAnswers: ["Saint-Bartholomew", "Saint-Pierre", "Saint-Pauline"]
+            
+        ))
+}
+

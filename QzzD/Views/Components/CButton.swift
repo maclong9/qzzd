@@ -45,7 +45,7 @@ struct CButton<Content: View>: View {
         
         // Colored Button
         CButton(action: { print("Indigo button") }, color: .indigo) {
-            Text("Red Button")
+            Text("Indigo Button")
         }
         
         // Full width button
@@ -81,6 +81,15 @@ struct CButton<Content: View>: View {
                 Spacer()
                 Text("Navigate")
                 Spacer()
+                Image(systemName: "arrow.right")
+            }
+        }
+        
+        // Button with icons on both sides no spacers
+        CButton(action: { print("Both sides icons") }, fullWidth: true) {
+            HStack {
+                Image(systemName: "arrow.left")
+                Text("Navigate")
                 Image(systemName: "arrow.right")
             }
         }
