@@ -23,7 +23,6 @@ struct Layout<Content: ViewContent>: View {
                 .padding(.vertical, 10)
             Text(title)
                 .font(.system(size: 32, weight: .black))
-            Spacer().frame(height: 125)
             content()
         }
         .padding()

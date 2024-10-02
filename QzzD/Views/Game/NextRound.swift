@@ -14,6 +14,7 @@ struct NextRoundView: View {
     
     var body: some View {
         Layout(title: "Get Ready") {
+            Spacer().frame(height: 125)
             RollingText(round: round)
             Spacer()
             

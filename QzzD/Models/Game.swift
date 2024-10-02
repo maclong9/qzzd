@@ -8,7 +8,7 @@
 struct Game {
     let name: String
     let players: [Player] = []
-    let answered: [Question.ID] = []
+    let answered: [Question]
     let roundCount: Int = 0
     let questionCount: Int = 0
     let currentQuestion: Question? = nil
