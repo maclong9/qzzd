@@ -12,7 +12,7 @@ struct RollingText: View {
     @State private var animationRange: [Int] = []
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: -5) {
             ForEach(0..<animationRange.count, id: \.self) { index in
                 Text("0")
                     .font(.system(size: 150, weight: .black))
