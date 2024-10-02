@@ -8,8 +8,42 @@
 import SwiftUI
 
 struct MainMenu: View {
+    @State private var showingAlert = false
+    @State private var gameName: String = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Layout(showBackButton: false, isMainMenu: true) {
+            VStack {
+                NavigationLink(destination: CreatePlayer()) {
+                    CButton(action: { print("Solo Game")}, color: .indigo) {
+                        Text("Solo Game")
+                    }
+                }
+                .padding()
+                Text("Multiplayer Game")
+                    .font(.title)
+                    .fontWeight(.black)
+                HStack {
+                    CButton(action: { showingAlert = true }, color: .teal) {
+                        HStack {
+                            Text("Create Game")
+                            Image(systemName: "plus.circle")
+                        }
+                    }.alert("Game Title", isPresented: $showingAlert) {
+                        TextField("Enter your games title", text: $gameName)
+                        Text("Let's Go!")
+                    }
+                    NavigationLink(destination: GameFinder()) {
+                        CButton(color: .blue) {
+                            HStack {
+                                Text("Join Game")
+                                Image(systemName: "arrowshape.turn.up.right.fill")
+                            }
+                        }
+                    }
+                }
+            }.padding(.top, 100)
+        }
     }
 }
 

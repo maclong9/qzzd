@@ -10,7 +10,6 @@ import SwiftUI
 struct NextRoundView: View {
     var round: Int
     var isReader: Bool = false
-    @State var questionRead: Bool = false
     
     var body: some View {
         Layout(title: "Get Ready") {
@@ -20,19 +19,20 @@ struct NextRoundView: View {
             
             if isReader {
                 CButton(action: { print("Reading Question") }, fullWidth: true) {
-                    Text("See Question")
-                    Image(systemName: "arrowshape.turn.up.forward.fill")
+                    HStack {
+                        Text("See Question")
+                        Image(systemName: "arrowshape.turn.up.forward.fill")
+                    }
                 }
             } else {
-                CButton(action: { print("Viewing Question") }, fullWidth: true, disabled: true) {
-                    Text(!questionRead ? "Waiting" : "Answer Question")
-                    if !questionRead {
-                        // TODO: Add animation to loading spinner
+                CButton(fullWidth: true) {
+                    HStack {
+                        Text("Waiting")
                         Image(systemName: "rays")
                     }
                 }
-                .disabled(!questionRead)
-                .opacity(!questionRead ? 0.8 : 1)
+                .disabled(true)
+                .opacity(0.8)
             }
         }
     }

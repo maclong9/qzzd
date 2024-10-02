@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CButton<Content: ViewContent>: View {
-    let action: () -> Void
+struct CButton<Content: View>: View {
+    let action: (() -> Void)?
     let color: Color
     let fullWidth: Bool
     let content: () -> Content
     
-    init(action: @escaping () -> Void, color: Color = .blue, fullWidth: Bool = false, disabled: Bool = false, @ViewBuilder content: @escaping () -> Content) {
+    init(action: (() -> Void)? = nil, color: Color = .blue, fullWidth: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.action = action
         self.color = color
         self.fullWidth = fullWidth
@@ -22,7 +22,7 @@ struct CButton<Content: ViewContent>: View {
     
     var body: some View {
         Button {
-            action()
+            action?()
         } label: {
             content()
                 .frame(maxWidth: fullWidth ? .infinity : nil)
@@ -31,8 +31,8 @@ struct CButton<Content: ViewContent>: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .fontWeight(.bold)
-        }.buttonStyle(PlainButtonStyle())
-        
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
