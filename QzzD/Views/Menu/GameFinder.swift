@@ -17,7 +17,11 @@ struct GameFinder: View {
                     ForEach(games) { game in
                         GameCard(game: game)
                             .onTapGesture {
-                                print("Joining game: \(game.title)...")
+                                if game.players.count < 8 {
+                                    print("Joining game: \(game.title)...")
+                                } else {
+                                    print("Game is full.")
+                                }
                             }
                     }
                 }

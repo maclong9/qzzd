@@ -29,18 +29,18 @@ struct Lobby: View {
                         .opacity(animatedCards[index] ? 1 : 0)
                         .animation(.easeOut(duration: 0.3).delay(Double(index) * 0.05), value: animatedCards[index])
                 }
+                CButton(action: { print("Starting Round") }, fullWidth: true) {
+                    HStack {
+                        Text("Next Round")
+                        Image(systemName: "arrowshape.turn.up.forward.fill")
+                    }
+                }
             }
             .padding()
             .onAppear {
                 animateCards()
             }
-            Spacer()
-            CButton(action: { print("Starting Round") }, fullWidth: true) {
-                HStack {
-                    Text("Next Round")
-                    Image(systemName: "arrowshape.turn.up.forward.fill")
-                }
-            }
+            
         }
     }
     

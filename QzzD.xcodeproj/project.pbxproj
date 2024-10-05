@@ -34,7 +34,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Views/Components/CButton.swift,
-				Views/Components/Global.swift,
 				Views/Components/Layout.swift,
 				Views/Components/RollingText.swift,
 				Views/Game/NextRound.swift,

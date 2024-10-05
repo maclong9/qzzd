@@ -10,6 +10,8 @@ import SwiftUI
 struct MainMenu: View {
     @State private var showingAlert = false
     @State private var gameName: String = ""
+    @State private var offsetY: CGFloat = 100
+    @State private var opacity: Double = 0.0
     
     var body: some View {
         Layout(showBackButton: false, isMainMenu: true) {
@@ -40,7 +42,16 @@ struct MainMenu: View {
                         }   
                     }
                 }
-            }.padding(.top, 100)
+            }
+            .padding(.top, 100)
+            .offset(y: offsetY)
+            .opacity(opacity)
+            .onAppear {
+                withAnimation(.bouncy(duration: 0.6)) {
+                  offsetY = 0
+                  opacity = 1
+                }
+            }
         }
     }
 }
