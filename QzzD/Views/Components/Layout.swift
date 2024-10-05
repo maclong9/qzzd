@@ -53,9 +53,7 @@ struct Layout<Content: View>: View {
                 .font(.system(size: 32, weight: .black))
                 .padding(.bottom, 20)
             
-            ScrollView {
-                content()
-            }
+            content()
         }
         .padding(.horizontal)
         .navigationBarTitle("", displayMode: .inline)
