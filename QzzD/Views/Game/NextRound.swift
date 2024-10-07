@@ -15,7 +15,6 @@ struct NextRoundView: View {
             Spacer().frame(height: 125)
             RollingText(round: round)
             Spacer()
-            
             CButton(fullWidth: true) {
                 HStack {
                     Text("Waiting")

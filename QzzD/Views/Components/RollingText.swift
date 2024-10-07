@@ -15,7 +15,6 @@ struct RollingText: View {
         HStack(spacing: -5) {
             ForEach(0..<animationRange.count, id: \.self) { index in
                 Text("0")
-
                     .font(.system(size: 150, weight: .black))
                     .opacity(0)
                     .overlay {
@@ -53,5 +52,5 @@ struct RollingText: View {
 }
 
 #Preview {
-    RollingText(round: 954)
+    RollingText(round: 947)
 }

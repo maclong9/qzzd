@@ -12,6 +12,7 @@ struct QuestionView: View {
     let player: String
     var playerAnswered: Bool
     var hasBeenRead: Bool
+    @State var totalAnswerCount: Int = 0
     
     init(game: Game, player: String, playerAnswered: Bool?, hasBeenRead: Bool?) {
         self.game = game
@@ -53,9 +54,7 @@ struct QuestionView: View {
                 if game.currentReader == player || playerAnswered {
                     CButton(fullWidth: true) {
                         HStack {
-                            Text(hasBeenRead ? "Waiting" : "Question Read")
-                            // TODO: add counter of players that have answered
-                            if hasBeenRead { Image(systemName: "rays") }
+                            Text(hasBeenRead ? "Waiting \(totalAnswerCount)/\(game.players.count)" : "Mark Question as Read")
                         }
                     }
                     .disabled(hasBeenRead ? true : false)

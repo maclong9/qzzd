@@ -8,9 +8,10 @@
 import Foundation
 import SwiftUI
 
-struct Player {
+struct Player: Equatable {
+    let id = UUID()
     let name: String
     let icon: String
     let color: Color
-    let score: Int
+    var score: Int
 }

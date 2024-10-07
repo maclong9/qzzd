@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Game: Identifiable {
+struct `Game`: Identifiable {
     let id = UUID()
     let title: String
     let players: [Player]
