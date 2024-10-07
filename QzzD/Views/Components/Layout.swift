@@ -26,7 +26,6 @@ struct Layout<Content: View>: View {
     }
     
     var body: some View {
-        Spacer()
         VStack(spacing: 0) {
             if isMainMenu {
                 Text("QzzD!")
@@ -58,7 +57,6 @@ struct Layout<Content: View>: View {
         .padding(.horizontal)
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(leading: backButton)
-        .edgesIgnoringSafeArea(.top)
     }
     
     @ViewBuilder

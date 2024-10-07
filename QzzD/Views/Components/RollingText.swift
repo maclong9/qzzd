@@ -15,6 +15,7 @@ struct RollingText: View {
         HStack(spacing: -5) {
             ForEach(0..<animationRange.count, id: \.self) { index in
                 Text("0")
+
                     .font(.system(size: 150, weight: .black))
                     .opacity(0)
                     .overlay {
@@ -34,12 +35,17 @@ struct RollingText: View {
         }
         .onAppear {
             animationRange = Array(repeating: 0, count: "\(round)".count)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                let stringValue = "\(round)"
-                for (index, value) in zip(0..<stringValue.count, stringValue) {
-                    withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1, blendDuration: 1)) {
-                        animationRange[index] = Int(String(value)) ?? 0
-                    }
+            animate()
+        }
+    }
+    
+    private func animate() {
+        Task {
+            try? await Task.sleep(for: .seconds(0.1))
+            let stringValue = "\(round)"
+            for (index, value) in zip(0..<stringValue.count, stringValue) {
+                withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1, blendDuration: 1)) {
+                    animationRange[index] = Int(String(value)) ?? 0
                 }
             }
         }

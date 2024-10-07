@@ -11,6 +11,16 @@ struct QuestionView: View {
     let currentRound: Int
     let currentQuestion: Int
     let question: Question
+    let isReader: Bool
+    let hasBeenRead: Bool
+    
+    init(currentRound: Int, currentQuestion: Int, question: Question, isReader: Bool = false, hasBeenRead: Bool = false) {
+        self.currentRound = currentRound
+        self.currentQuestion = currentQuestion
+        self.question = question
+        self.isReader = isReader
+        self.hasBeenRead = hasBeenRead
+    }
     
     var body: some View {
         Layout(title: "Round \(currentRound)") {
@@ -42,14 +52,27 @@ struct QuestionView: View {
                 
                 Spacer()
                 
-                VStack(spacing: 12) {
-                    ForEach(answerOptions, id: \.self) { answer in
-                        CButton(action: {
-                            print("Selected answer: \(answer)")
-                        },  fullWidth: true) {
-                            Text(answer)
-                                .lineLimit(3)
-                                .minimumScaleFactor(0.5)
+                // TODO: Alter this to include if player has answered
+                if isReader {
+                    CButton(fullWidth: true) {
+                        HStack {
+                            Text(hasBeenRead ? "Question Read" : "Waiting")
+                            if !hasBeenRead { Image(systemName: "rays") }
+                            // TODO: add counter of players that have answered
+                        }
+                    }
+                    .disabled(true)
+                    .opacity(0.8)
+                } else {
+                    VStack(spacing: 12) {
+                        ForEach(answerOptions, id: \.self) { answer in
+                            CButton(action: {
+                                print("Selected answer: \(answer)")
+                            },  fullWidth: true) {
+                                Text(answer)
+                                    .lineLimit(3)
+                                    .minimumScaleFactor(0.5)
+                            }
                         }
                     }
                 }
@@ -148,3 +171,36 @@ struct InfoIndicator: View {
         ))
 }
 
+#Preview("Player is Reader") {
+    QuestionView(
+        currentRound: 6,
+        currentQuestion: 8,
+        question: Question(
+            style: .normal,
+            difficulty: .medium,
+            category: .entertainment,
+            question: "What was the name of the asylum Van Gogh admitted himself to",
+            correctAnswer: .string("Saint-Paul"),
+            incorrectAnswers: ["Saint-Bartholomew", "Saint-Pierre", "Saint-Pauline"]
+        ),
+        isReader: true,
+        hasBeenRead: false
+    )
+}
+
+#Preview("Player is Reader and Question is Read") {
+    QuestionView(
+        currentRound: 6,
+        currentQuestion: 8,
+        question: Question(
+            style: .normal,
+            difficulty: .medium,
+            category: .entertainment,
+            question: "What was the name of the asylum Van Gogh admitted himself to",
+            correctAnswer: .string("Saint-Paul"),
+            incorrectAnswers: ["Saint-Bartholomew", "Saint-Pierre", "Saint-Pauline"]
+        ),
+        isReader: true,
+        hasBeenRead: true
+    )
+}
