@@ -10,18 +10,18 @@ import Foundation
 struct Game: Identifiable {
     let id = UUID()
     let title: String
-    let players: [Player]
-    let questions: [Question]
-    let roundCount: Int
-    let questionCount: Int
-    let currentReader: String?
+    var players: [Player]
+    var questions: [Question]
+    var roundCount: Int
+    var questionCount: Int
+    var currentReader: Player
     
-    init(title: String, players: [Player] = [], roundCount: Int = 0, questionCount: Int = 1, currentReader: String? = nil) {
+    init(title: String, players: [Player] = [], roundCount: Int = 0, questionCount: Int = 1, currentReader: Player? = nil) {
         self.title = title
         self.players = players
         self.roundCount = roundCount
         self.questionCount = questionCount
-        self.currentReader = currentReader
+        self.currentReader = currentReader ?? players.first!
         self.questions = [
             Question(
                 style: .boolean,
@@ -46,5 +46,23 @@ struct Game: Identifiable {
                 correctAnswer: .boolean(true)
             )
         ]
+    }
+    
+    mutating func addPlayer(_ player: Player) {
+        players.append(player)
+    }
+    
+    mutating func removePlayer(_ player: Player) {
+        players.removeAll(where: { $0.id == player.id })
+    }
+    
+    mutating func nextQuestion() {
+        if questionCount < 10 {
+            questionCount += 1
+        } else {
+            currentReader = players.shuffled().first!
+            questionCount = 0
+            roundCount += 1
+        }
     }
 }

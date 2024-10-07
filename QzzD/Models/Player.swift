@@ -14,4 +14,15 @@ struct Player: Equatable {
     let icon: String
     let color: Color
     var score: Int
+    
+    mutating func incrementScore(difficulty: Difficulty) {
+        switch difficulty {
+            case .easy:
+                score += 1
+            case .medium:
+                score += 2
+            case .hard:
+                score += 3
+        }
+    }
 }
