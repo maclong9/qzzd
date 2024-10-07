@@ -17,6 +17,8 @@ struct Layout<Content: View>: View {
     @State private var scale: CGFloat = 0.01
     @State private var opacity: Double = 0
     @State private var size: CGFloat = 0
+    @State private var rotation: Double = 0
+    @State private var timer: Timer? // Change here to @State
     
     init(title: String = "", showBackButton: Bool = true, isMainMenu: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
@@ -34,12 +36,17 @@ struct Layout<Content: View>: View {
                     .scaleEffect(scale)
                     .opacity(opacity)
                     .frame(height: size)
+                    .rotationEffect(.degrees(rotation))
                     .onAppear {
                         withAnimation(.bouncy(duration: 0.6)) {
                             scale = 1
                             opacity = 1
                             size = UIScreen.main.bounds.width
                         }
+                        startShaking()
+                    }
+                    .onDisappear {
+                        timer?.invalidate()
                     }
             } else {
                 Text("QzzD!")
@@ -57,6 +64,20 @@ struct Layout<Content: View>: View {
         .padding(.horizontal)
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(leading: backButton)
+    }
+    
+    private func startShaking() {
+        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(Int.random(in: 15...30)), repeats: true) { _ in
+            withAnimation(.easeInOut(duration: 0.5)) {
+                rotation += 5
+            }
+            withAnimation(.easeInOut(duration: 0.5).delay(0.5)) {
+                rotation -= 10
+            }
+            withAnimation(.easeInOut(duration: 0.5).delay(1.0)) {
+                rotation += 6
+            }
+        }
     }
     
     @ViewBuilder
@@ -77,7 +98,13 @@ struct Layout<Content: View>: View {
 }
 
 #Preview {
-    Layout(title: "Hello, world!"){
+    Layout(title: "Hello, world!") {
+        Text("Hello, world!")
+    }
+}
+
+#Preview("Main Menu") {
+    Layout(title: "Hello, world!", isMainMenu: true) {
         Text("Hello, world!")
     }
 }
