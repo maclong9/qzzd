@@ -45,7 +45,7 @@ struct Game: Identifiable {
                 question: "Steve Jobs threw an iPod in a fish tank",
                 correctAnswer: .boolean(true)
             )
-        ]
+        ].shuffled()
     }
     
     mutating func addPlayer(_ player: Player) {
@@ -58,6 +58,7 @@ struct Game: Identifiable {
     
     mutating func nextQuestion() {
         if questionCount < 10 {
+            questions.removeFirst()
             questionCount += 1
         } else {
             currentReader = players.shuffled().first!

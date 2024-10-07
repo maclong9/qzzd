@@ -67,7 +67,7 @@ struct Layout<Content: View>: View {
     }
     
     private func startShaking() {
-        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(Int.random(in: 15...30)), repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(Int.random(in: 10...20)), repeats: true) { _ in
             withAnimation(.easeInOut(duration: 0.5)) {
                 rotation += 5
             }
@@ -75,7 +75,7 @@ struct Layout<Content: View>: View {
                 rotation -= 10
             }
             withAnimation(.easeInOut(duration: 0.5).delay(1.0)) {
-                rotation += 6
+                rotation += 5
             }
         }
     }

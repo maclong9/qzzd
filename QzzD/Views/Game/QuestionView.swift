@@ -9,12 +9,12 @@ import SwiftUI
 
 struct QuestionView: View {
     let game: Game
-    let player: String
+    let player: Player
     var playerAnswered: Bool
     var hasBeenRead: Bool
     @State var totalAnswerCount: Int = 0
     
-    init(game: Game, player: String, playerAnswered: Bool?, hasBeenRead: Bool?) {
+    init(game: Game, player: Player, playerAnswered: Bool?, hasBeenRead: Bool?) {
         self.game = game
         self.player = player
         self.playerAnswered = playerAnswered ?? false
@@ -55,7 +55,7 @@ struct QuestionView: View {
                 
                 Spacer()
                 
-                if game.currentReader == player || playerAnswered {
+                if game.currentReader.name == player.name || playerAnswered {
                     CButton(fullWidth: true) {
                         HStack {
                             Text(hasBeenRead ? "Waiting \(totalAnswerCount)/\(game.players.count)" : "Mark Question as Read")
@@ -138,9 +138,9 @@ struct InfoIndicator: View {
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
             questionCount: 0,
-            currentReader: "Player Two"
+            currentReader: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90)
         ),
-        player: "Player One",
+        player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
         playerAnswered: false,
         hasBeenRead: false
     )
@@ -157,9 +157,9 @@ struct InfoIndicator: View {
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
             questionCount: 1,
-            currentReader: "Player One"
+            currentReader: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100)
         ),
-        player: "Player Two",
+        player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
         hasBeenRead: false
     )
@@ -175,9 +175,9 @@ struct InfoIndicator: View {
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
             questionCount: 2,
-            currentReader: "Player One"
+            currentReader: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100)
         ),
-        player: "Player Two",
+        player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
         hasBeenRead: false
     )
@@ -192,9 +192,9 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentReader: "Player One"
+            currentReader: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100)
         ),
-        player: "Player Two",
+        player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: true,
         hasBeenRead: true
     )
@@ -209,9 +209,9 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentReader: "Player Two"
+            currentReader: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90)
         ),
-        player: "Player Two",
+        player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
         hasBeenRead: false
     )
@@ -226,9 +226,9 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentReader: "Player One"
+            currentReader: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100)
         ),
-        player: "Player One",
+        player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
         playerAnswered: true,
         hasBeenRead: true
     )
