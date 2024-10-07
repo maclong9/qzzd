@@ -21,6 +21,10 @@ struct QuestionView: View {
         self.hasBeenRead = hasBeenRead ?? false
     }
     
+    var currentQuestion: Question {
+        game.questions[game.questionCount]
+    }
+    
     var body: some View {
         Layout(title: "Round \(game.roundCount)") {
             Spacer()
@@ -31,19 +35,19 @@ struct QuestionView: View {
                 
                 HStack {
                     InfoIndicator(
-                        text: game.currentQuestion!.difficulty.rawValue,
+                        text: currentQuestion.difficulty.rawValue,
                         icon: difficultyIcon,
                         color: difficultyColor
                     )
                     Spacer()
                     InfoIndicator(
-                        text: game.currentQuestion!.category.rawValue,
-                        icon: game.currentQuestion!.category.icon,
-                        color: game.currentQuestion!.category.color
+                        text: currentQuestion.category.rawValue,
+                        icon: currentQuestion.category.icon,
+                        color: currentQuestion.category.color
                     )
                 }
                 
-                Text(game.currentQuestion!.question)
+                Text(currentQuestion.question)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -57,13 +61,13 @@ struct QuestionView: View {
                             Text(hasBeenRead ? "Waiting \(totalAnswerCount)/\(game.players.count)" : "Mark Question as Read")
                         }
                     }
-                    .disabled(hasBeenRead ? true : false)
+                    .disabled(hasBeenRead)
                 } else {
                     VStack(spacing: 12) {
                         ForEach(answerOptions, id: \.self) { answer in
                             CButton(action: {
                                 print("Selected answer: \(answer)")
-                            },  fullWidth: true) {
+                            }, fullWidth: true) {
                                 Text(answer)
                                     .lineLimit(3)
                                     .minimumScaleFactor(0.5)
@@ -77,17 +81,17 @@ struct QuestionView: View {
     }
     
     var answerOptions: [String] {
-        switch game.currentQuestion!.correctAnswer {
+        switch currentQuestion.correctAnswer {
             case .string(let answer):
-                let allAnswers = [answer] + (game.currentQuestion!.incorrectAnswers ?? [])
-                return game.currentQuestion!.style == .normal ? allAnswers.shuffled() : ["True", "False"]
+                let allAnswers = [answer] + (currentQuestion.incorrectAnswers ?? [])
+                return currentQuestion.style == .normal ? allAnswers.shuffled() : ["True", "False"]
             case .boolean(let answer):
                 return [String(answer).capitalized, String(!answer).capitalized]
         }
     }
     
     var difficultyIcon: String {
-        switch game.currentQuestion!.difficulty {
+        switch currentQuestion.difficulty {
             case .easy: return "dial.low.fill"
             case .medium: return "dial.medium.fill"
             case .hard: return "dial.high.fill"
@@ -95,7 +99,7 @@ struct QuestionView: View {
     }
     
     var difficultyColor: Color {
-        switch game.currentQuestion!.difficulty {
+        switch currentQuestion.difficulty {
             case .easy: return .green
             case .medium: return .orange
             case .hard: return .red
@@ -133,13 +137,7 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentQuestion: Question(
-                style: .boolean,
-                difficulty: .easy,
-                category: .science,
-                question: "Apple designed the MacBook",
-                correctAnswer: .boolean(true)
-            ),
+            questionCount: 0,
             currentReader: "Player Two"
         ),
         player: "Player One",
@@ -158,14 +156,7 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentQuestion: Question(
-                style: .normal,
-                difficulty: .medium,
-                category: .science,
-                question: "Who designed the MacBook?",
-                correctAnswer: .string("Apple"),
-                incorrectAnswers: ["McDonalds", "Microsoft", "Tesla"]
-            ),
+            questionCount: 1,
             currentReader: "Player One"
         ),
         player: "Player Two",
@@ -183,14 +174,7 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentQuestion: Question(
-                style: .normal,
-                difficulty: .hard,
-                category: .history,
-                question: "In which year did the French Revolution begin?",
-                correctAnswer: .string("1789"),
-                incorrectAnswers: ["1776", "1804", "1815"]
-            ),
+            questionCount: 2,
             currentReader: "Player One"
         ),
         player: "Player Two",
@@ -208,14 +192,6 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentQuestion: Question(
-                style: .normal,
-                difficulty: .easy,
-                category: .geography,
-                question: "What is the capital of France?",
-                correctAnswer: .string("Paris"),
-                incorrectAnswers: ["London", "Tokyo", "New York"]
-            ),
             currentReader: "Player One"
         ),
         player: "Player Two",
@@ -233,14 +209,6 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentQuestion: Question(
-                style: .normal,
-                difficulty: .medium,
-                category: .entertainment,
-                question: "Who played Tony Stark in the Marvel Cinematic Universe?",
-                correctAnswer: .string("Robert Downey Jr."),
-                incorrectAnswers: ["Chris Evans", "Chris Hemsworth", "Mark Ruffalo"]
-            ),
             currentReader: "Player Two"
         ),
         player: "Player Two",
@@ -258,14 +226,6 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            currentQuestion: Question(
-                style: .normal,
-                difficulty: .medium,
-                category: .geography,
-                question: "What is the capital of Australia?",
-                correctAnswer: .string("Canberra"),
-                incorrectAnswers: ["Sydney", "Melbourne", "Perth"]
-            ),
             currentReader: "Player One"
         ),
         player: "Player One",

@@ -12,20 +12,16 @@ struct `Game`: Identifiable {
     let title: String
     let players: [Player]
     let questions: [Question]
-    let answeredQuestions: [Question]
     let roundCount: Int
     let questionCount: Int
-    let currentQuestion: Question?
     let currentReader: String?
     
-    init(title: String, players: [Player] = [], answeredQuestions: [Question] = [], roundCount: Int = 0, questionCount: Int = 1, currentQuestion: Question? = nil, currentReader: String? = nil) {
+    init(title: String, players: [Player] = [], roundCount: Int = 0, questionCount: Int = 1, currentReader: String? = nil) {
         self.title = title
         self.players = players
         self.questions = questionsArray
-        self.answeredQuestions = answeredQuestions
         self.roundCount = roundCount
         self.questionCount = questionCount
-        self.currentQuestion = currentQuestion
         self.currentReader = currentReader
     }
     
@@ -39,11 +35,18 @@ struct `Game`: Identifiable {
         ),
         Question(
             style: .normal,
-            difficulty: .easy,
+            difficulty: .medium,
             category: .science,
-            question: "Who designed the MacBook",
-            correctAnswer: .string("Apple"),
-            incorrectAnswers: ["McDonalds", "Microsoft", "Tesla"]
+            question: "Who made the original Apple Computer?",
+            correctAnswer: .string("Steve Wozniak"),
+            incorrectAnswers: ["Steve Jobs", "Barry Allen", "Elon Musk"]
+        ),
+        Question(
+            style: .boolean,
+            difficulty: .hard,
+            category: .science,
+            question: "Steve Jobs threw an iPod in a fish tank",
+            correctAnswer: .boolean(true)
         )
     ]
 }
