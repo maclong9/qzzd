@@ -8,43 +8,41 @@
 import SwiftUI
 
 struct QuestionView: View {
-    let currentRound: Int
-    let currentQuestion: Int
-    let question: Question
-    let isReader: Bool
-    let hasBeenRead: Bool
+    let game: Game
+    let player: String
+    var playerAnswered: Bool
+    var hasBeenRead: Bool
     
-    init(currentRound: Int, currentQuestion: Int, question: Question, isReader: Bool = false, hasBeenRead: Bool = false) {
-        self.currentRound = currentRound
-        self.currentQuestion = currentQuestion
-        self.question = question
-        self.isReader = isReader
-        self.hasBeenRead = hasBeenRead
+    init(game: Game, player: String, playerAnswered: Bool?, hasBeenRead: Bool?) {
+        self.game = game
+        self.player = player
+        self.playerAnswered = playerAnswered ?? false
+        self.hasBeenRead = hasBeenRead ?? false
     }
     
     var body: some View {
-        Layout(title: "Round \(currentRound)") {
+        Layout(title: "Round \(game.roundCount)") {
             Spacer()
             VStack(spacing: 20) {
-                Text("Question \(currentQuestion)/10")
+                Text("Question \(game.questionCount)/10")
                     .font(.headline)
                     .fontWeight(.semibold)
                 
                 HStack {
                     InfoIndicator(
-                        text: question.difficulty.rawValue,
+                        text: game.currentQuestion!.difficulty.rawValue,
                         icon: difficultyIcon,
                         color: difficultyColor
                     )
                     Spacer()
                     InfoIndicator(
-                        text: question.category.rawValue,
-                        icon: question.category.icon,
-                        color: question.category.color
+                        text: game.currentQuestion!.category.rawValue,
+                        icon: game.currentQuestion!.category.icon,
+                        color: game.currentQuestion!.category.color
                     )
                 }
                 
-                Text(question.question)
+                Text(game.currentQuestion!.question)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -52,17 +50,15 @@ struct QuestionView: View {
                 
                 Spacer()
                 
-                // TODO: Alter this to include if player has answered
-                if isReader {
+                if game.currentReader == player || playerAnswered {
                     CButton(fullWidth: true) {
                         HStack {
-                            Text(hasBeenRead ? "Question Read" : "Waiting")
-                            if !hasBeenRead { Image(systemName: "rays") }
+                            Text(hasBeenRead ? "Waiting" : "Question Read")
                             // TODO: add counter of players that have answered
+                            if hasBeenRead { Image(systemName: "rays") }
                         }
                     }
-                    .disabled(true)
-                    .opacity(0.8)
+                    .disabled(hasBeenRead ? true : false)
                 } else {
                     VStack(spacing: 12) {
                         ForEach(answerOptions, id: \.self) { answer in
@@ -82,17 +78,17 @@ struct QuestionView: View {
     }
     
     var answerOptions: [String] {
-        switch question.correctAnswer {
+        switch game.currentQuestion!.correctAnswer {
             case .string(let answer):
-                let allAnswers = [answer] + (question.incorrectAnswers ?? [])
-                return question.style == .normal ? allAnswers.shuffled() : ["True", "False"]
+                let allAnswers = [answer] + (game.currentQuestion!.incorrectAnswers ?? [])
+                return game.currentQuestion!.style == .normal ? allAnswers.shuffled() : ["True", "False"]
             case .boolean(let answer):
                 return [String(answer).capitalized, String(!answer).capitalized]
         }
     }
     
     var difficultyIcon: String {
-        switch question.difficulty {
+        switch game.currentQuestion!.difficulty {
             case .easy: return "dial.low.fill"
             case .medium: return "dial.medium.fill"
             case .hard: return "dial.high.fill"
@@ -100,7 +96,7 @@ struct QuestionView: View {
     }
     
     var difficultyColor: Color {
-        switch question.difficulty {
+        switch game.currentQuestion!.difficulty {
             case .easy: return .green
             case .medium: return .orange
             case .hard: return .red
@@ -129,78 +125,152 @@ struct InfoIndicator: View {
     }
 }
 
-#Preview("Multiple Choice") {
-    QuestionView(
-        currentRound: 5,
-        currentQuestion: 4,
-        question: Question(
-            style: .normal,
-            difficulty: .easy,
-            category: .science,
-            question: "Who designed the MacBook",
-            correctAnswer: .string("Apple"),
-            incorrectAnswers: ["McDonalds", "Microsoft", "Tesla"]
-        ))
-}
-
 #Preview("Boolean") {
     QuestionView(
-        currentRound: 6,
-        currentQuestion: 8,
-        question: Question(
-            style: .boolean,
-            difficulty: .medium,
-            category: .entertainment,
-            question: "Oppenheimer was shot for IMAX screens",
-            correctAnswer: .boolean(true)
-        ))
-}
-
-#Preview("Hard Question") {
-    QuestionView(
-        currentRound: 6,
-        currentQuestion: 8,
-        question: Question(
-            style: .normal,
-            difficulty: .hard,
-            category: .art,
-            question: "What was the name of the asylum Van Gogh admitted himself to",
-            correctAnswer: .string("Saint-Paul"),
-            incorrectAnswers: ["Saint-Bartholomew", "Saint-Pierre", "Saint-Pauline"]
-            
-        ))
-}
-
-#Preview("Player is Reader") {
-    QuestionView(
-        currentRound: 6,
-        currentQuestion: 8,
-        question: Question(
-            style: .normal,
-            difficulty: .medium,
-            category: .entertainment,
-            question: "What was the name of the asylum Van Gogh admitted himself to",
-            correctAnswer: .string("Saint-Paul"),
-            incorrectAnswers: ["Saint-Bartholomew", "Saint-Pierre", "Saint-Pauline"]
+        game: Game(
+            title: "Test Game",
+            players: [
+                Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+                Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
+                Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
+            ],
+            currentQuestion: Question(
+                style: .boolean,
+                difficulty: .easy,
+                category: .science,
+                question: "Apple designed the MacBook",
+                correctAnswer: .boolean(true)
+            ),
+            currentReader: "Player Two"
         ),
-        isReader: true,
+        player: "Player One",
+        playerAnswered: false,
         hasBeenRead: false
     )
 }
 
-#Preview("Player is Reader and Question is Read") {
+
+#Preview("Multiple Choice") {
     QuestionView(
-        currentRound: 6,
-        currentQuestion: 8,
-        question: Question(
-            style: .normal,
-            difficulty: .medium,
-            category: .entertainment,
-            question: "What was the name of the asylum Van Gogh admitted himself to",
-            correctAnswer: .string("Saint-Paul"),
-            incorrectAnswers: ["Saint-Bartholomew", "Saint-Pierre", "Saint-Pauline"]
+        game: Game(
+            title: "Test Game",
+            players: [
+                Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+                Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
+                Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
+            ],
+            currentQuestion: Question(
+                style: .normal,
+                difficulty: .medium,
+                category: .science,
+                question: "Who designed the MacBook?",
+                correctAnswer: .string("Apple"),
+                incorrectAnswers: ["McDonalds", "Microsoft", "Tesla"]
+            ),
+            currentReader: "Player One"
         ),
-        isReader: true,
+        player: "Player Two",
+        playerAnswered: false,
+        hasBeenRead: false
+    )
+}
+
+#Preview("Hard Question") {
+    QuestionView(
+        game: Game(
+            title: "Test Game",
+            players: [
+                Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+                Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
+                Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
+            ],
+            currentQuestion: Question(
+                style: .normal,
+                difficulty: .hard,
+                category: .history,
+                question: "In which year did the French Revolution begin?",
+                correctAnswer: .string("1789"),
+                incorrectAnswers: ["1776", "1804", "1815"]
+            ),
+            currentReader: "Player One"
+        ),
+        player: "Player Two",
+        playerAnswered: false,
+        hasBeenRead: false
+    )
+}
+
+#Preview("Question has been Answered") {
+    QuestionView(
+        game: Game(
+            title: "Test Game",
+            players: [
+                Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+                Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
+                Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
+            ],
+            currentQuestion: Question(
+                style: .normal,
+                difficulty: .easy,
+                category: .geography,
+                question: "What is the capital of France?",
+                correctAnswer: .string("Paris"),
+                incorrectAnswers: ["London", "Tokyo", "New York"]
+            ),
+            currentReader: "Player One"
+        ),
+        player: "Player Two",
+        playerAnswered: true,
+        hasBeenRead: true
+    )
+}
+
+#Preview("Player is Reader") {
+    QuestionView(
+        game: Game(
+            title: "Test Game",
+            players: [
+                Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+                Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
+                Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
+            ],
+            currentQuestion: Question(
+                style: .normal,
+                difficulty: .medium,
+                category: .entertainment,
+                question: "Who played Tony Stark in the Marvel Cinematic Universe?",
+                correctAnswer: .string("Robert Downey Jr."),
+                incorrectAnswers: ["Chris Evans", "Chris Hemsworth", "Mark Ruffalo"]
+            ),
+            currentReader: "Player Two"
+        ),
+        player: "Player Two",
+        playerAnswered: false,
+        hasBeenRead: false
+    )
+}
+
+#Preview("Player Is Reader and Question Is Read") {
+    QuestionView(
+        game: Game(
+            title: "Test Game",
+            players: [
+                Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+                Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
+                Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
+            ],
+            currentQuestion: Question(
+                style: .normal,
+                difficulty: .medium,
+                category: .geography,
+                question: "What is the capital of Australia?",
+                correctAnswer: .string("Canberra"),
+                incorrectAnswers: ["Sydney", "Melbourne", "Perth"]
+            ),
+            currentReader: "Player One"
+        ),
+        player: "Player One",
+        playerAnswered: true,
         hasBeenRead: true
     )
 }

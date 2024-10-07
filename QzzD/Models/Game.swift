@@ -16,9 +16,9 @@ struct Game: Identifiable {
     let roundCount: Int
     let questionCount: Int
     let currentQuestion: Question?
-    let currentReader: Player?
+    let currentReader: String?
     
-    init(title: String, players: [Player] = [], answeredQuestions: [Question] = [], roundCount: Int = 0, questionCount: Int = 1, currentQuestion: Question? = nil, currentReader: Player? = nil) {
+    init(title: String, players: [Player] = [], answeredQuestions: [Question] = [], roundCount: Int = 0, questionCount: Int = 1, currentQuestion: Question? = nil, currentReader: String? = nil) {
         self.title = title
         self.players = players
         self.questions = questionsArray
