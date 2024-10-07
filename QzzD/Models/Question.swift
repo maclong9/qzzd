@@ -8,28 +8,29 @@
 import SwiftUI
 
 enum QuestionStyle {
-    case normal, boolean
+    case normal,
+         boolean
 }
 
 enum Difficulty: String {
-    case easy = "Easy"
-    case medium = "Medium"
-    case hard = "Hard"
+    case easy = "Easy",
+         medium = "Medium",
+         hard = "Hard"
 }
 
 enum QuizCategory: String, Codable, CaseIterable {
-    case generalKnowledge = "General Knowledge"
-    case entertainment = "Entertainment"
-    case science = "Science"
-    case mythology = "Mythology"
-    case sports = "Sports"
-    case geography = "Geography"
-    case history = "History"
-    case politics = "Politics"
-    case art = "Art"
-    case celebrities = "Celebrities"
-    case animals = "Animals"
-    case vehicles = "Vehicles"
+    case generalKnowledge = "General Knowledge",
+         entertainment = "Entertainment",
+         science = "Science",
+         mythology = "Mythology",
+         sports = "Sports",
+         geography = "Geography",
+         history = "History",
+         politics = "Politics",
+         art = "Art",
+         celebrities = "Celebrities",
+         animals = "Animals",
+         vehicles = "Vehicles"
     
     var icon: String {
         switch self {
@@ -68,8 +69,8 @@ enum QuizCategory: String, Codable, CaseIterable {
 
 struct Question {
     enum Answer {
-        case string(String)
-        case boolean(Bool)
+        case string(String),
+             boolean(Bool)
     }
     
     let id = UUID()
