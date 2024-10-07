@@ -18,7 +18,7 @@ struct Layout<Content: View>: View {
     @State private var opacity: Double = 0
     @State private var size: CGFloat = 0
     @State private var rotation: Double = 0
-    @State private var timer: Timer? // Change here to @State
+    @State private var timer: Timer?
     
     init(title: String = "", showBackButton: Bool = true, isMainMenu: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.title = title

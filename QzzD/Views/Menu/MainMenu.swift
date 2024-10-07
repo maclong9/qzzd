@@ -39,7 +39,7 @@ struct MainMenu: View {
                         HStack {
                             Text("Join Game")
                             Image(systemName: "arrowshape.turn.up.right.fill")
-                        }   
+                        }
                     }
                 }
             }
@@ -48,8 +48,8 @@ struct MainMenu: View {
             .opacity(opacity)
             .onAppear {
                 withAnimation(.bouncy(duration: 0.6)) {
-                  offsetY = 0
-                  opacity = 1
+                    offsetY = 0
+                    opacity = 1
                 }
             }
         }
