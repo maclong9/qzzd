@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NextRoundView: View {
+struct NextRound: View {
     var round: Int
     
     var body: some View {
@@ -28,13 +28,13 @@ struct NextRoundView: View {
 }
 
 #Preview("Single Digit") {
-    NextRoundView(round: 8)
+    NextRound(round: 8)
 }
 
 #Preview("Double Digit") {
-    NextRoundView(round: 64)
+    NextRound(round: 64)
 }
 
 #Preview("Triple Digit") {
-    NextRoundView(round: 256)
+    NextRound(round: 256)
 }

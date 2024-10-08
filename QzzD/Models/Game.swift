@@ -61,7 +61,7 @@ struct Game: Identifiable {
             questions.removeFirst()
             questionCount += 1
         } else {
-            currentReader = players.shuffled().first!
+            currentReader = players.filter { $0.id != currentReader.id }.shuffled().first!
             questionCount = 0
             roundCount += 1
         }

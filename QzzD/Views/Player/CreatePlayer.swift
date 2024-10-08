@@ -7,10 +7,17 @@
 
 import SwiftUI
 
-struct CreatePlayerView: View {
+struct CreatePlayer: View {
+    let isSoloGame: Bool
+    let gameName: String?
     @State private var playerName = ""
     @State private var selectedColor: Color = .red
     @State private var selectedIcon = "person.fill"
+    
+    init(isSoloGame: Bool = false, gameName: String? = nil) {
+        self.isSoloGame = isSoloGame
+        self.gameName = gameName
+    }
     
     let colors: [Color] = [.red, .blue, .green, .yellow, .orange, .purple, .indigo, .teal]
     let icons = [
@@ -23,15 +30,17 @@ struct CreatePlayerView: View {
     ]
     
     var body: some View {
-        Layout(title: "Join Game") {
+        Layout(title: isSoloGame ? "Solo Game" : gameName ?? "Join Game") {
             VStack(spacing: 20) {
                 Text("Your Name")
                     .font(.headline)
                     .fontWeight(.black)
                 
-                TextField("Enter your name", text: $playerName)
+                TextField("Enter your name...", text: $playerName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
+                    .shadow(radius: 1)
+                
                 
                 Text("Choose your color")
                     .font(.headline)
@@ -62,7 +71,7 @@ struct CreatePlayerView: View {
                 
                 CButton(fullWidth: true) {
                     HStack {
-                        Text("Join Game")
+                        Text(isSoloGame ? "Start Game": "Join Game")
                         Image(systemName: "arrowshape.turn.up.right.fill")
                     }
                 }
@@ -110,6 +119,10 @@ struct IconBox: View {
     }
 }
 
-#Preview {
-    CreatePlayerView()
+#Preview("Single Player") {
+    CreatePlayer()
+}
+
+#Preview("Multiplayer") {
+    CreatePlayer(gameName: "Some Game")
 }

@@ -16,7 +16,7 @@ struct MainMenu: View {
     var body: some View {
         Layout(showBackButton: false, isMainMenu: true) {
             VStack {
-                CButton(color: .indigo) {
+                CButton(link: { CreatePlayer(isSoloGame: true) }, color: .indigo) {
                     Text("Solo Game")
                 }
                 .padding()
@@ -32,10 +32,11 @@ struct MainMenu: View {
                         }
                     }.alert("Game Title", isPresented: $showingAlert) {
                         TextField("Enter your games title", text: $gameName)
-                        Text("Let's Go!")
+                        NavigationLink(destination: CreatePlayer(isSoloGame: false, gameName: gameName)) {
+                            Text("Let's Go!")
+                        }
                     }
-                    
-                    CButton(color: .blue) {
+                    CButton(link: { GameFinder() }, color: .blue) {
                         HStack {
                             Text("Join Game")
                             Image(systemName: "arrowshape.turn.up.right.fill")

@@ -15,14 +15,17 @@ struct Player: Equatable {
     let color: Color
     var score: Int
     
-    mutating func incrementScore(difficulty: Difficulty) {
+    mutating func incrementScore(difficulty: Difficulty, time: TimeInterval) {
+        let baseScore: Int
         switch difficulty {
-            case .easy:
-                score += 1
-            case .medium:
-                score += 2
-            case .hard:
-                score += 3
+            case .easy: baseScore = 100
+            case .medium: baseScore = 200
+            case .hard: baseScore = 300
         }
+        
+        let timeRatio = 1 - (time / 10)
+        let timeBonus = Int(Double(baseScore) * timeRatio)
+        
+        score += baseScore + timeBonus
     }
 }

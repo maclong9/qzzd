@@ -12,7 +12,7 @@ struct Layout<Content: View>: View {
     let title: String
     let showBackButton: Bool
     let isMainMenu: Bool
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     @State private var scale: CGFloat = 0.01
     @State private var opacity: Double = 0
@@ -28,42 +28,43 @@ struct Layout<Content: View>: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            if isMainMenu {
-                Text("QzzD!")
-                    .font(.system(size: 100, weight: .black))
-                    .padding(.vertical, 10)
-                    .scaleEffect(scale)
-                    .opacity(opacity)
-                    .frame(height: size)
-                    .rotationEffect(.degrees(rotation))
-                    .onAppear {
-                        withAnimation(.bouncy(duration: 0.6)) {
-                            scale = 1
-                            opacity = 1
-                            size = UIScreen.main.bounds.width
+        NavigationStack {
+            VStack(spacing: 0) {
+                if isMainMenu {
+                    Text("QzzD!")
+                        .font(.system(size: 100, weight: .black))
+                        .padding(.vertical, 10)
+                        .scaleEffect(scale)
+                        .opacity(opacity)
+                        .frame(height: size)
+                        .rotationEffect(.degrees(rotation))
+                        .onAppear {
+                            withAnimation(.bouncy(duration: 0.6)) {
+                                scale = 1
+                                opacity = 1
+                                size = UIScreen.main.bounds.width
+                            }
+                            startShaking()
                         }
-                        startShaking()
-                    }
-                    .onDisappear {
-                        timer?.invalidate()
-                    }
-            } else {
-                Text("QzzD!")
-                    .font(.system(size: 56, weight: .black))
-                    .padding(.top, 40)
-                    .padding(.bottom, 10)
+                        .onDisappear {
+                            timer?.invalidate()
+                        }
+                } else {
+                    Text("QzzD!")
+                        .font(.system(size: 56, weight: .black))
+                        .padding(.top, 40)
+                        .padding(.bottom, 10)
+                }
+                
+                Text(title)
+                    .font(.system(size: 32, weight: .black))
+                    .padding(.bottom, 20)
+                
+                content()
             }
-            
-            Text(title)
-                .font(.system(size: 32, weight: .black))
-                .padding(.bottom, 20)
-            
-            content()
+            .padding(.horizontal)
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .padding(.horizontal)
-        .navigationBarTitle("", displayMode: .inline)
-        .navigationBarItems(leading: backButton)
     }
     
     private func startShaking() {
@@ -77,22 +78,6 @@ struct Layout<Content: View>: View {
             withAnimation(.easeInOut(duration: 0.5).delay(1.0)) {
                 rotation += 5
             }
-        }
-    }
-    
-    @ViewBuilder
-    private var backButton: some View {
-        if showBackButton {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }) {
-                HStack {
-                    Image(systemName: "chevron.left")
-                    Text("Back")
-                }
-            }
-        } else {
-            EmptyView()
         }
     }
 }
