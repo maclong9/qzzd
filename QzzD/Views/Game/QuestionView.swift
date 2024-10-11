@@ -55,7 +55,7 @@ struct QuestionView: View {
                 
                 Spacer()
                 
-                if game.currentReader.name == player.name || playerAnswered {
+                if game.currentReader?.name == player.name || playerAnswered {
                     CButton(fullWidth: true) {
                         HStack {
                             Text(hasBeenRead ? "Waiting \(totalAnswerCount)/\(game.players.count)" : "Mark Question as Read")

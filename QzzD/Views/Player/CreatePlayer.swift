@@ -13,10 +13,15 @@ struct CreatePlayer: View {
     @State private var playerName = ""
     @State private var selectedColor: Color = .red
     @State private var selectedIcon = "person.fill"
+    @Environment(SessionData.self) var sessionData
     
     init(isSoloGame: Bool = false, gameName: String? = nil) {
         self.isSoloGame = isSoloGame
         self.gameName = gameName
+        
+        if isSoloGame {
+            sessionData.game = Game(title: UUID().uuidString)
+        }
     }
     
     let colors: [Color] = [.red, .blue, .green, .yellow, .orange, .purple, .indigo, .teal]
@@ -31,21 +36,18 @@ struct CreatePlayer: View {
     
     var body: some View {
         Layout(title: isSoloGame ? "Solo Game" : gameName ?? "Join Game") {
+            Text("ID: \(sessionData.game?.id.uuidString ?? "Missing") TITLE: \(sessionData.game?.title ?? "Missing")")
             VStack(spacing: 20) {
                 Text("Your Name")
                     .font(.headline)
                     .fontWeight(.black)
-                
                 TextField("Enter your name...", text: $playerName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
                     .shadow(radius: 1)
-                
-                
                 Text("Choose your color")
                     .font(.headline)
                     .fontWeight(.black)
-                
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))], spacing: 10) {
                     ForEach(colors, id: \.self) { color in
                         ColorBox(color: color, isSelected: color == selectedColor)
@@ -55,11 +57,9 @@ struct CreatePlayer: View {
                     }
                 }
                 .padding(.horizontal, 50)
-                
                 Text("Choose your icon")
                     .font(.headline)
                     .fontWeight(.black)
-                
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))], spacing: 10) {
                     ForEach(icons, id: \.self) { icon in
                         IconBox(icon: icon, isSelected: icon == selectedIcon, playerColor: selectedColor)
@@ -68,7 +68,6 @@ struct CreatePlayer: View {
                             }
                     }
                 }
-                
                 CButton(fullWidth: true) {
                     HStack {
                         Text(isSoloGame ? "Start Game": "Join Game")
@@ -121,8 +120,10 @@ struct IconBox: View {
 
 #Preview("Single Player") {
     CreatePlayer()
+        .environment(SessionData(game: Game(title: UUID().uuidString)))
 }
 
 #Preview("Multiplayer") {
     CreatePlayer(gameName: "Some Game")
+        .environment(SessionData(game: Game(title: "Some Multiplayer Game")))
 }

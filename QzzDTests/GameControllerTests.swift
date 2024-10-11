@@ -29,7 +29,7 @@ struct GameTests {
         #expect(game.roundCount == 1)
         #expect(game.questionCount == 1)
         #expect(game.currentReader.name == "Alice")
-        #expect(game.questions.count == 3)
+        #expect(game.questions.count == 4)
     }
     
     @Test
@@ -42,7 +42,7 @@ struct GameTests {
         #expect(game.roundCount == 0)
         #expect(game.questionCount == 1)
         #expect(game.currentReader.name == "Alice")
-        #expect(game.questions.count == 3)
+        #expect(game.questions.count == 4)
     }
     
     @Test

@@ -37,7 +37,6 @@ struct GameCard: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                
                 Text(game.title)
                     .font(.headline)
                 HStack(spacing: 2) {
@@ -47,9 +46,7 @@ struct GameCard: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             }
-            
             Spacer()
-            
             Image(systemName: "chevron.right")
                 .foregroundColor(.blue)
         }

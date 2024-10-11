@@ -14,14 +14,39 @@ struct Game: Identifiable {
     var questions: [Question]
     var roundCount: Int
     var questionCount: Int
-    var currentReader: Player
+    var currentReader: Player?
+    
+    mutating func addPlayer(_ player: Player) {
+        players.append(player)
+        if currentReader == nil {
+            currentReader = player
+        }
+    }
+    
+    mutating func removePlayer(_ player: Player) {
+        players.removeAll(where: { $0.id == player.id })
+        if currentReader?.id == player.id {
+            currentReader = players.first
+        }
+    }
+    
+    mutating func nextQuestion() {
+        if questionCount < 10 {
+            questions.removeFirst()
+            questionCount += 1
+        } else {
+            currentReader = players.filter { $0.id != currentReader?.id }.shuffled().first
+            questionCount = 0
+            roundCount += 1
+        }
+    }
     
     init(title: String, players: [Player] = [], roundCount: Int = 0, questionCount: Int = 1, currentReader: Player? = nil) {
         self.title = title
         self.players = players
         self.roundCount = roundCount
         self.questionCount = questionCount
-        self.currentReader = currentReader ?? players.first!
+        self.currentReader = currentReader ?? players.first
         self.questions = [
             Question(
                 style: .normal,
@@ -54,24 +79,5 @@ struct Game: Identifiable {
                 correctAnswer: .boolean(true)
             ),
         ].shuffled()
-    }
-    
-    mutating func addPlayer(_ player: Player) {
-        players.append(player)
-    }
-    
-    mutating func removePlayer(_ player: Player) {
-        players.removeAll(where: { $0.id == player.id })
-    }
-    
-    mutating func nextQuestion() {
-        if questionCount < 10 {
-            questions.removeFirst()
-            questionCount += 1
-        } else {
-            currentReader = players.filter { $0.id != currentReader.id }.shuffled().first!
-            questionCount = 0
-            roundCount += 1
-        }
     }
 }
