@@ -13,15 +13,10 @@ struct CreatePlayer: View {
     @State private var playerName = ""
     @State private var selectedColor: Color = .red
     @State private var selectedIcon = "person.fill"
-    @Environment(SessionData.self) var sessionData
     
     init(isSoloGame: Bool = false, gameName: String? = nil) {
         self.isSoloGame = isSoloGame
         self.gameName = gameName
-        
-        if isSoloGame {
-            sessionData.game = Game(title: UUID().uuidString)
-        }
     }
     
     let colors: [Color] = [.red, .blue, .green, .yellow, .orange, .purple, .indigo, .teal]
@@ -36,7 +31,6 @@ struct CreatePlayer: View {
     
     var body: some View {
         Layout(title: isSoloGame ? "Solo Game" : gameName ?? "Join Game") {
-            Text("ID: \(sessionData.game?.id.uuidString ?? "Missing") TITLE: \(sessionData.game?.title ?? "Missing")")
             VStack(spacing: 20) {
                 Text("Your Name")
                     .font(.headline)
@@ -120,10 +114,8 @@ struct IconBox: View {
 
 #Preview("Single Player") {
     CreatePlayer()
-        .environment(SessionData(game: Game(title: UUID().uuidString)))
 }
 
 #Preview("Multiplayer") {
     CreatePlayer(gameName: "Some Game")
-        .environment(SessionData(game: Game(title: "Some Multiplayer Game")))
 }

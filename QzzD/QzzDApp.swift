@@ -9,12 +9,9 @@ import SwiftUI
 
 @main
 struct QzzDApp: App {
-    @State private var sessionData = SessionData()
-    
     var body: some Scene {
         WindowGroup {
             MainMenu()
-                .environment(sessionData)
         }
     }
 }
