@@ -24,13 +24,6 @@ struct Game: Identifiable {
         self.currentReader = currentReader ?? players.first!
         self.questions = [
             Question(
-                style: .boolean,
-                difficulty: .easy,
-                category: .science,
-                question: "Apple designed the MacBook",
-                correctAnswer: .boolean(true)
-            ),
-            Question(
                 style: .normal,
                 difficulty: .medium,
                 category: .science,
@@ -39,12 +32,27 @@ struct Game: Identifiable {
                 incorrectAnswers: ["Steve Jobs", "Barry Allen", "Elon Musk"]
             ),
             Question(
+                style: .normal,
+                difficulty: .hard,
+                category: .science,
+                question: "What Operating System is macOS based on",
+                correctAnswer: .string("UNIX"),
+                incorrectAnswers: ["Microsoft Windows", "Linux", "Android"]
+            ),
+            Question(
                 style: .boolean,
                 difficulty: .hard,
                 category: .science,
                 question: "Steve Jobs threw an iPod in a fish tank",
                 correctAnswer: .boolean(true)
-            )
+            ),
+            Question(
+                style: .boolean,
+                difficulty: .easy,
+                category: .science,
+                question: "Apple designed the MacBook",
+                correctAnswer: .boolean(true)
+            ),
         ].shuffled()
     }
     

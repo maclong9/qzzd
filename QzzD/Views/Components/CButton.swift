@@ -7,24 +7,24 @@
 
 import SwiftUI
 
-struct CButton<Content: View, Destination: View>: View {
+struct CButton<Content: View>: View {
     let action: (() -> Void)?
-    let link: (() -> Destination)?
+    let destination: AnyView?
     let color: Color
     let fullWidth: Bool
     let content: () -> Content
     
-    init(action: (() -> Void)? = nil, color: Color = .blue, fullWidth: Bool = false, @ViewBuilder content: @escaping () -> Content) where Destination == Never {
+    init(action: (() -> Void)? = nil, color: Color = .blue, fullWidth: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.action = action
-        self.link = nil
+        self.destination = nil
         self.color = color
         self.fullWidth = fullWidth
         self.content = content
     }
     
-    init(link: @escaping () -> Destination, color: Color = .blue, fullWidth: Bool = false, @ViewBuilder content: @escaping () -> Content) {
+    init<Destination: View>(destination: @escaping () -> Destination, color: Color = .blue, fullWidth: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.action = nil
-        self.link = link
+        self.destination = AnyView(destination())
         self.color = color
         self.fullWidth = fullWidth
         self.content = content
@@ -32,8 +32,8 @@ struct CButton<Content: View, Destination: View>: View {
     
     var body: some View {
         Group {
-            if let link = link {
-                NavigationLink(destination: link()) {
+            if let destination = destination {
+                NavigationLink(destination: destination) {
                     buttonContent
                 }
             } else {
@@ -65,7 +65,7 @@ struct CButton<Content: View, Destination: View>: View {
             }
             
             // Colored Button with Navigation
-            CButton(link: { Text("Destination View") }, color: .indigo) {
+            CButton(destination: { Text("Destination View") }, color: .indigo) {
                 Text("Navigate to Destination")
             }
             
@@ -75,7 +75,7 @@ struct CButton<Content: View, Destination: View>: View {
             }
             
             // Full width colored button with Navigation
-            CButton(link: { Text("Settings View") }, color: .teal, fullWidth: true) {
+            CButton(destination: { Text("Settings View") }, color: .teal, fullWidth: true) {
                 Text("Go to Settings")
             }
             
@@ -88,7 +88,7 @@ struct CButton<Content: View, Destination: View>: View {
             }
             
             // Button with right icon and Navigation
-            CButton(link: { Text("Profile View") }) {
+            CButton(destination: { Text("Profile View") }) {
                 HStack {
                     Text("Profile")
                     Image(systemName: "person.fill")

@@ -8,25 +8,22 @@
 import SwiftUI
 
 struct Layout<Content: View>: View {
-    let content: () -> Content
-    let title: String
-    let showBackButton: Bool
+    let title: String?
     let isMainMenu: Bool
-    @Environment(\.dismiss) private var dismiss
+    let content: () -> Content
     
     @State private var scale: CGFloat = 0.01
     @State private var opacity: Double = 0
     @State private var size: CGFloat = 0
     @State private var rotation: Double = 0
     @State private var timer: Timer?
-    
-    init(title: String = "", showBackButton: Bool = true, isMainMenu: Bool = false, @ViewBuilder content: @escaping () -> Content) {
+
+    init(title: String? = nil, isMainMenu: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
-        self.showBackButton = showBackButton
         self.isMainMenu = isMainMenu
         self.content = content
     }
-    
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -56,7 +53,7 @@ struct Layout<Content: View>: View {
                         .padding(.bottom, 10)
                 }
                 
-                Text(title)
+                Text(title ?? "")
                     .font(.system(size: 32, weight: .black))
                     .padding(.bottom, 20)
                 
@@ -82,14 +79,14 @@ struct Layout<Content: View>: View {
     }
 }
 
-#Preview {
+#Preview("Regular Layout") {
     Layout(title: "Hello, world!") {
-        Text("Hello, world!")
+        Text("Content goes here")
     }
 }
 
-#Preview("Main Menu") {
-    Layout(title: "Hello, world!", isMainMenu: true) {
-        Text("Hello, world!")
+#Preview("Main Menu Layout") {
+    Layout(title: "Main Menu", isMainMenu: true) {
+        Text("Main menu content")
     }
 }

@@ -9,14 +9,14 @@ import SwiftUI
 
 struct MainMenu: View {
     @State private var showingAlert = false
-    @State private var gameName: String = ""
     @State private var offsetY: CGFloat = 100
     @State private var opacity: Double = 0.0
+    @State var gameName: String = ""
     
     var body: some View {
-        Layout(showBackButton: false, isMainMenu: true) {
+        Layout(isMainMenu: true) {
             VStack {
-                CButton(link: { CreatePlayer(isSoloGame: true) }, color: .indigo) {
+                CButton(destination: { CreatePlayer(isSoloGame: true) }, color: .indigo) {
                     Text("Solo Game")
                 }
                 .padding()
@@ -36,7 +36,7 @@ struct MainMenu: View {
                             Text("Let's Go!")
                         }
                     }
-                    CButton(link: { GameFinder() }, color: .blue) {
+                    CButton(destination: { GameFinder() }, color: .blue) {
                         HStack {
                             Text("Join Game")
                             Image(systemName: "arrowshape.turn.up.right.fill")
