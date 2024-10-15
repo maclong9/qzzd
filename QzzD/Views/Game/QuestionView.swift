@@ -12,14 +12,19 @@ struct QuestionView: View {
     let player: Player
     var playerAnswered: Bool
     var hasBeenRead: Bool
+    let isCurrentReader: Bool
     @State var totalAnswerCount: Int = 0
+    
+    
     
     init(game: Game, player: Player, playerAnswered: Bool?, hasBeenRead: Bool?) {
         self.game = game
         self.player = player
         self.playerAnswered = playerAnswered ?? false
         self.hasBeenRead = hasBeenRead ?? false
+        self.isCurrentReader = self.game.currentReader?.name == self.player.name
     }
+    
     
     var currentQuestion: Question {
         game.questions[game.questionCount]
@@ -47,33 +52,38 @@ struct QuestionView: View {
                     )
                 }
                 
-                Text(currentQuestion.question)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 64)
-                
-                Spacer()
-                
-                if game.currentReader?.name == player.name || playerAnswered {
-                    CButton(fullWidth: true) {
-                        HStack {
-                            Text(hasBeenRead ? "Waiting \(totalAnswerCount)/\(game.players.count)" : "Mark Question as Read")
+                if isCurrentReader || hasBeenRead {
+                    Text(currentQuestion.question)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 64)
+                    
+                    
+                    Spacer()
+                    
+                    if isCurrentReader || playerAnswered {
+                        CButton(fullWidth: true) {
+                            HStack {
+                                Text(hasBeenRead ? "Waiting \(totalAnswerCount)/\(game.players.count)" : "Mark Question as Read")
+                            }
                         }
-                    }
-                    .disabled(hasBeenRead)
-                } else {
-                    VStack(spacing: 12) {
-                        ForEach(answerOptions, id: \.self) { answer in
-                            CButton(action: {
-                                print("Selected answer: \(answer)")
-                            }, fullWidth: true) {
-                                Text(answer)
-                                    .lineLimit(3)
-                                    .minimumScaleFactor(0.5)
+                        .disabled(hasBeenRead)
+                    } else {
+                        VStack(spacing: 12) {
+                            ForEach(answerOptions, id: \.self) { answer in
+                                CButton(action: {
+                                    print("Selected answer: \(answer)")
+                                }, fullWidth: true) {
+                                    Text(answer)
+                                        .lineLimit(3)
+                                        .minimumScaleFactor(0.5)
+                                }
                             }
                         }
                     }
+                } else {
+                    Spacer()
                 }
             }
             .padding(.horizontal)
@@ -137,12 +147,12 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
-            questionCount: 0,
+            questionCount: 3,
             currentReader: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90)
         ),
         player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
         playerAnswered: false,
-        hasBeenRead: false
+        hasBeenRead: true
     )
 }
 
@@ -161,7 +171,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
-        hasBeenRead: false
+        hasBeenRead: true
     )
 }
 
@@ -179,7 +189,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
-        hasBeenRead: false
+        hasBeenRead: true
     )
 }
 
@@ -192,6 +202,7 @@ struct InfoIndicator: View {
                 Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
                 Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
             ],
+            questionCount: 3,
             currentReader: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100)
         ),
         player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
@@ -231,5 +242,22 @@ struct InfoIndicator: View {
         player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
         playerAnswered: true,
         hasBeenRead: true
+    )
+}
+
+#Preview("Player is Waiting for Question to be Read") {
+    QuestionView(
+        game: Game(
+            title: "Test Game",
+            players: [
+                Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+                Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
+                Player(name: "Player Three", icon: "heart.fill", color: .blue, score: 80),
+            ],
+            currentReader: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100)
+        ),
+        player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
+        playerAnswered: false,
+        hasBeenRead: false
     )
 }

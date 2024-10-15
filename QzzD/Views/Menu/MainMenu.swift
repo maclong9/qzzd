@@ -70,3 +70,4 @@ struct MainMenu: View {
 #Preview {
     MainMenu()
 }
+

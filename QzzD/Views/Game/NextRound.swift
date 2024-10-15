@@ -15,20 +15,12 @@ struct NextRound: View {
             Spacer().frame(height: 125)
             RollingText(round: round)
             Spacer()
-            CButton(fullWidth: true) {
-                HStack {
-                    Text("Waiting")
-                    Image(systemName: "rays")
-                }
-            }
-            .disabled(true)
-            .opacity(0.8)
         }
     }
 }
 
 #Preview("Single Digit") {
-    NextRound(round: 8)
+    NextRound(round: 64)
 }
 
 #Preview("Double Digit") {

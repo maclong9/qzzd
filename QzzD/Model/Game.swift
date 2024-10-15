@@ -18,6 +18,7 @@ struct Game: Identifiable {
     
     mutating func addPlayer(_ player: Player) {
         players.append(player)
+        
         if currentReader == nil {
             currentReader = player
         }
@@ -25,6 +26,7 @@ struct Game: Identifiable {
     
     mutating func removePlayer(_ player: Player) {
         players.removeAll(where: { $0.id == player.id })
+        
         if currentReader?.id == player.id {
             currentReader = players.first
         }
@@ -41,7 +43,7 @@ struct Game: Identifiable {
         }
     }
     
-    init(title: String, players: [Player] = [], roundCount: Int = 0, questionCount: Int = 1, currentReader: Player? = nil) {
+    init(title: String, players: [Player] = [], roundCount: Int = 1, questionCount: Int = 1, currentReader: Player? = nil) {
         self.title = title
         self.players = players
         self.roundCount = roundCount
@@ -78,6 +80,6 @@ struct Game: Identifiable {
                 question: "Apple designed the MacBook",
                 correctAnswer: .boolean(true)
             ),
-        ].shuffled()
+        ]
     }
 }
