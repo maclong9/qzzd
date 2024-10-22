@@ -11,20 +11,17 @@ struct QuestionView: View {
     let game: Game
     let player: Player
     var playerAnswered: Bool
-    var hasBeenRead: Bool
-    let isCurrentReader: Bool
+    @Binding var hasBeenRead: Bool
     @State var totalAnswerCount: Int = 0
+    var isCurrentReader: Bool
     
-    
-    
-    init(game: Game, player: Player, playerAnswered: Bool?, hasBeenRead: Bool?) {
+    init(game: Game, player: Player, playerAnswered: Bool?, hasBeenRead: Binding<Bool>) {
         self.game = game
         self.player = player
         self.playerAnswered = playerAnswered ?? false
-        self.hasBeenRead = hasBeenRead ?? false
+        self._hasBeenRead = hasBeenRead
         self.isCurrentReader = self.game.currentReader?.name == self.player.name
     }
-    
     
     var currentQuestion: Question {
         game.questions[game.questionCount]
@@ -59,11 +56,10 @@ struct QuestionView: View {
                         .multilineTextAlignment(.center)
                         .padding(.top, 64)
                     
-                    
                     Spacer()
-                    
+
                     if isCurrentReader || playerAnswered {
-                        CButton(fullWidth: true) {
+                        CButton(action: { hasBeenRead.toggle() }, fullWidth: true) {
                             HStack {
                                 Text(hasBeenRead ? "Waiting \(totalAnswerCount)/\(game.players.count)" : "Mark Question as Read")
                             }
@@ -152,7 +148,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
         playerAnswered: false,
-        hasBeenRead: true
+        hasBeenRead: .constant(true)
     )
 }
 
@@ -171,7 +167,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
-        hasBeenRead: true
+        hasBeenRead: .constant(true)
     )
 }
 
@@ -189,7 +185,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
-        hasBeenRead: true
+        hasBeenRead: .constant(true)
     )
 }
 
@@ -207,7 +203,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: true,
-        hasBeenRead: true
+        hasBeenRead: .constant(true)
     )
 }
 
@@ -224,7 +220,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player Two", icon: "star.fill", color: .red, score: 90),
         playerAnswered: false,
-        hasBeenRead: false
+        hasBeenRead: .constant(false)
     )
 }
 
@@ -241,7 +237,7 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
         playerAnswered: true,
-        hasBeenRead: true
+        hasBeenRead: .constant(true)
     )
 }
 
@@ -258,6 +254,6 @@ struct InfoIndicator: View {
         ),
         player: Player(name: "Player One", icon: "person.fill", color: .teal, score: 100),
         playerAnswered: false,
-        hasBeenRead: false
+        hasBeenRead: .constant(false)
     )
 }

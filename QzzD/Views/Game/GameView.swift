@@ -11,6 +11,7 @@ struct GameView: View {
     @State private var game: Game
     @State private var showingLeaderboard: Bool = true
     @State private var showingNextRound: Bool = false
+    @State private var questionHasBeenRead: Bool = false
     
     init(game: Game) {
         _game = State(initialValue: game)
@@ -30,7 +31,7 @@ struct GameView: View {
                         game: game,
                         player: game.currentReader ?? game.players[0],
                         playerAnswered: false,
-                        hasBeenRead: false
+                        hasBeenRead: $questionHasBeenRead
                     )
                     .transition(.opacity)
                 }
@@ -58,7 +59,7 @@ struct GameView: View {
             showingLeaderboard = false
             showingNextRound = true
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { // Adjust timing as needed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             withAnimation {
                 showingNextRound = false
             }

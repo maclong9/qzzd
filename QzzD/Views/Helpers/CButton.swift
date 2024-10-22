@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CButton<Content: View>: View {
-    let action: (() -> Void)?
     let destination: AnyView?
     let color: Color
     let fullWidth: Bool
+    let action: (() -> Void)?
     let content: () -> Content
     
     init(action: (() -> Void)? = nil, color: Color = .blue, fullWidth: Bool = false, @ViewBuilder content: @escaping () -> Content) {
