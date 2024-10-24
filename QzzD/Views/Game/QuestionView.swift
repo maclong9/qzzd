@@ -30,11 +30,7 @@ struct QuestionView: View {
     var body: some View {
         Layout(title: "Round \(game.roundCount)") {
             Spacer()
-            VStack(spacing: 20) {
-                Text("Question \(game.questionCount)/10")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
+            VStack(spacing: 20) {                
                 HStack {
                     InfoIndicator(
                         text: currentQuestion.difficulty.rawValue,
@@ -69,7 +65,8 @@ struct QuestionView: View {
                         VStack(spacing: 12) {
                             ForEach(answerOptions, id: \.self) { answer in
                                 CButton(action: {
-                                    print("Selected answer: \(answer)")
+//                                    totalAnswerCount += 1
+//                                    playerAnswered.toggle()
                                 }, fullWidth: true) {
                                     Text(answer)
                                         .lineLimit(3)

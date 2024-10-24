@@ -68,6 +68,7 @@ struct GameView: View {
     
     private func nextQuestion() {
         game.nextQuestion()
+        questionHasBeenRead.toggle()
     }
 }
 
